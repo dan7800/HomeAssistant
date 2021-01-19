@@ -1,0 +1,119 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+
+# Example configuration.yaml entry
+alarm_control_panel:
+  - platform: template
+    panels:
+      safe_alarm_panel:
+        value_template: "{{ states('alarm_control_panel.real_alarm') }}"
+        arm_away:
+          service: alarm_control_panel.alarm_arm_away
+          data:
+            entity_id: alarm_control_panel.real_alarm
+            code: XXX
+        arm_home:
+          service: alarm_control_panel.alarm_arm_home
+          data:
+            entity_id: alarm_control_panel.real_alarm
+            code: XXX
+        disarm:
+          - condition: state
+            entity_id: device_tracker.paulus
+            state: 'home'
+          - service: alarm_control_panel.alarm_arm_home
+            data:
+              entity_id: alarm_control_panel.real_alarm
+              code: XXXX
+              
+              
+# Example configuration.yaml entry
+envisalink:
+  host: 192.168.1.XXX
+  panel_type: HONEYWELL
+  user_name: user
+  password: XXXX
+  code: 'XXX'
+  port: 4025
+  evl_version: 4
+  keepalive_interval: 60
+  zonedump_interval: 30
+  timeout: 10
+  panic_type: Police
+  zones:
+    1:
+      name: '1111'
+      type: 'opening'
+    2:
+      name: 'Garage house door'
+      type: 'opening'
+    3:
+      name: 'Front Door'
+      type: 'opening'
+    4:
+      name: 'Den Window/door'
+      type: 'opening'
+    5:
+      name: 'Downstairs office/laundry room window'
+      type: 'opening'
+    6:
+      name: 'Formal Living/Ding Window'
+      type: 'opening'
+    7:
+      name: '7777'
+      type: 'opening'
+    8:
+      name: '8888'
+      type: 'opening'
+    9:
+      name: 'Nook Windows'
+      type: 'opening'
+    10:
+      name: 'Back Basement Door'
+      type: 'opening'
+    11:
+      name: 'Office Windows'
+      type: 'opening'
+    12:
+      name: 'Master Door'
+      type: 'opening'
+    13:
+      name: 'Master Windows'
+      type: 'opening'
+    14:
+      name: 'Dungeon Door'
+      type: 'opening'
+    15:
+      name: 'GameRoom-Drew Windows'
+      type: 'opening'
+    16:
+      name: 'Blue Room'
+      type: 'opening'
+  partitions:
+    1:
+      name: 'Home Alarm'
+      
+#### Not working
+# Example configuration.yaml entry
+#camera:
+#  - platform: generic
+#    still_image_url: http://192.168.1.142/jpg/image.jpg
+    
+camera:
+  - platform: generic
+    name: Livingroom Camera
+    still_image_url: http://192.168.1.142/jpg/image.jpg
+    username: 1JFIEGBRINDAA
+    password: admin
+    authentication: basic
